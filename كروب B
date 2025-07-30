@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>كروب B</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e8f0f2;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    .container {
+      padding: 40px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    input, button, textarea {
+      margin: 10px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .section {
+      background: #ffffff;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-width: 700px;
+      text-align: right;
+    }
+
+    .section h2 {
+      cursor: pointer;
+      background-color: #d6eaf8;
+      padding: 10px;
+      border-radius: 8px;
+      color: #2c3e50;
+    }
+
+    .admin-only {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .preview-item {
+      display: inline-block;
+      margin: 10px;
+      text-align: center;
+      position: relative;
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    }
+
+    .preview-item button {
+      margin-top: 5px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .preview-item .download-btn {
+      background-color: #2ecc71;
+      margin-right: 5px;
+    }
+
+    .note {
+      margin-top: 5px;
+      font-size: 14px;
+      color: #333;
+      background: #f0f0f0;
+      padding: 6px;
+      border-radius: 5px;
+      max-width: 200px;
+      word-wrap: break-word;
+    }
+
+    #loginMessage {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .content-body {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="loginSection" class="container">
+  <h1>تسجيل الدخول إلى كروب B</h1>
+  <input type="text" id="username" placeholder="اسم المستخدم"><br>
+  <input type="password" id="password" placeholder="كلمة السر"><br>
+  <button onclick="login()">دخول</button>
+  <div id="loginMessage"></div>
+</div>
+
+<div id="mainContent" style="display: none;" class="container">
+  <h1>كروب B</h1>
+
+  <!-- الأقسام -->
+  <div class="section">
+    <h2 onclick="toggleContent(this)">اللغة العربية</h2>
+    <div class="content-body">
+      <div class="admin-only">
+        <textarea placeholder="اكتب ملاحظة..."></textarea><br>
+        <input type="file" accept="image/*,video/*" multiple onchange="handleFiles(event, 'preview1', 'arabic')">
+      </div>
+      <div class="preview" id="preview1"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleContent(this)">اللغة الإنكليزية</h2>
+    <div class="content-body">
+      <div class="admin-only">
+        <textarea placeholder="اكتب ملاحظة..."></textarea><br>
+        <input type="file" accept="image/*,video/*" multiple onchange="handleFiles(event, 'preview2', 'english')">
+      </div>
+      <div class="preview" id="preview2"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleContent(this)">الرياضيات</h2>
+    <div class="content-body">
+      <div class="admin-only">
+        <textarea placeholder="اكتب ملاحظة..."></textarea><br>
+        <input type="file" accept="image/*,video/*" multiple onchange="handleFiles(event, 'preview3', 'math')">
+      </div>
+      <div class="preview" id="preview3"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleContent(this)">الفيزياء</h2>
+    <div class="content-body">
+      <div class="admin-only">
+        <textarea placeholder="اكتب ملاحظة..."></textarea><br>
+        <input type="file" accept="image/*,video/*" multiple onchange="handleFiles(event, 'preview4', 'physics')">
+      </div>
+      <div class="preview" id="preview4"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 onclick="toggleContent(this)">الكيمياء</h2>
+    <div class="content-body">
+      <div class="admin-only">
+        <textarea placeholder="اكتب ملاحظة..."></textarea><br>
+        <input type="file" accept="image/*,video/*" multiple onchange="handleFiles(event, 'preview5', 'chemistry')">
+      </div>
+      <div class="preview" id="preview5"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let isAdmin = false;
+
+  function login() {
+    const user = document.getElementById("username").value.trim();
+    const pass = document.getElementById("password").value.trim();
+    const messageDiv = document.getElementById("loginMessage");
+
+    if (user === "mjmt5" && pass === "2005") {
+      isAdmin = true;
+      messageDiv.textContent = "✅ تم تسجيل دخول المسؤول";
+      setTimeout(() => showMain("admin"), 1500);
+    } else if (user === "six th" && pass === "12345") {
+      isAdmin = false;
+      messageDiv.textContent = "📚 تم تسجيل دخول الطالب";
+      setTimeout(() => showMain("student"), 1500);
+    } else {
+      messageDiv.style.color = "red";
+      messageDiv.textContent = "❌ اسم المستخدم أو كلمة السر غير صحيحة";
+    }
+  }
+
+  function showMain(role) {
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
+    if (role === "admin") {
+      document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
+    }
+    loadAllPreviews();
+  }
+
+  function toggleContent(header) {
+    const content = header.nextElementSibling;
+    content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+  }
+
+  function handleFiles(event, previewId, storageKey) {
+    const files = Array.from(event.target.files);
+    const preview = document.getElementById(previewId);
+    let saved = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+    files.forEach(file => {
+      const note = prompt("اكتب ملاحظة لهذه الصورة/الفيديو:");
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const src = e.target.result;
+        const item = { type: file.type, data: src, note: note || '' };
+        saved.push(item);
+        localStorage.setItem(storageKey, JSON.stringify(saved));
+        displayMedia(item, preview, storageKey, saved.length - 1);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function displayMedia(item, container, storageKey, index = null) {
+    const wrapper = document.createElement('div');
+    wrapper.className = "preview-item";
+
+    const media = item.type.startsWith('video') ? document.createElement('video') : document.createElement('img');
+    media.src = item.data;
+    if (item.type.startsWith('video')) media.controls = true;
+    media.style.maxWidth = "200px";
+    wrapper.appendChild(media);
+
+    const noteDiv = document.createElement('div');
+    noteDiv.className = "note";
+    noteDiv.textContent = item.note;
+    wrapper.appendChild(noteDiv);
+
+    const btnGroup = document.createElement('div');
+
+    const downloadBtn = document.createElement('button');
+    downloadBtn.textContent = "تحميل";
+    downloadBtn.className = "download-btn";
+    downloadBtn.onclick = () => {
+      const a = document.createElement('a');
+      a.href = item.data;
+      a.download = "media";
+      a.click();
+    };
+    btnGroup.appendChild(downloadBtn);
+
+    if (isAdmin) {
+      const delBtn = document.createElement('button');
+      delBtn.textContent = "حذف";
+      delBtn.onclick = () => {
+        let saved = JSON.parse(localStorage.getItem(storageKey)) || [];
+        saved.splice(index, 1);
+        localStorage.setItem(storageKey, JSON.stringify(saved));
+        loadAllPreviews();
+      };
+      btnGroup.appendChild(delBtn);
+    }
+
+    wrapper.appendChild(btnGroup);
+    container.appendChild(wrapper);
+  }
+
+  function loadAllPreviews() {
+    const sections = [
+      { id: 'preview1', key: 'arabic' },
+      { id: 'preview2', key: 'english' },
+      { id: 'preview3', key: 'math' },
+      { id: 'preview4', key: 'physics' },
+      { id: 'preview5', key: 'chemistry' }
+    ];
+
+    sections.forEach(({ id, key }) => {
+      const preview = document.getElementById(id);
+      preview.innerHTML = '';
+      const saved = JSON.parse(localStorage.getItem(key)) || [];
+      saved.forEach((item, index) => {
+        displayMedia(item, preview, key, index);
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
